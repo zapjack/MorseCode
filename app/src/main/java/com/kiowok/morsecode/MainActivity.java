@@ -6,15 +6,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class MainActivity extends Activity {
     Button dot, dash, done;
     TextView ques, status;
-    EditText answer;
+    EditText guess;
     Model model = new Model();
 
     @Override
@@ -27,7 +23,7 @@ public class MainActivity extends Activity {
         done = findViewById(R.id.done);
         ques = findViewById(R.id.ques);
         status = findViewById(R.id.status);
-        answer = findViewById(R.id.answer);
+        guess = findViewById(R.id.guess);
 
         model.start(1);
         refresh();
@@ -38,8 +34,10 @@ public class MainActivity extends Activity {
 
         String s = (model.isLastQuestionCorrect() ? "Correct!!!" : "No...");
 
-        if (model.justStarting())
+        if (model.justStarting()) {
+            guess.setText("");
             status.setText("Starting...");
+        }
         else if (model.done())
             status.setText(String.format("Last guess: %s\n%d of %d", s, model.getCorrect(), model.getTotal()));
         else
@@ -47,14 +45,21 @@ public class MainActivity extends Activity {
     }
 
     public void onDot(View view) {
+        String s = guess.getText().toString();
+        s += ".";
+        guess.setText(s);
         model.addToGuessText(".");
     }
 
     public void onDash(View view) {
+        String s = guess.getText().toString();
+        s += "-";
+        guess.setText(s);
         model.addToGuessText("-");
     }
 
     public void onDone(View view) {
+        guess.setText("");
         model.eval();
         refresh();
         /*
