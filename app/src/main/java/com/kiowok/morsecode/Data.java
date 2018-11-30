@@ -46,14 +46,19 @@ public class Data {
             "A", "C", "D", "E", "M", "N", "O", "S", "T"
     };
 
+    public static ArrayList<Data> dataAll = new ArrayList<>();
+
     public static ArrayList<Data> data = new ArrayList();
 
-    public static void buildData(String[] source) {
-        data = new ArrayList<>();
+    public static void buildData(String[] source, ArrayList<Data> dest) {
         for (String s : source) {
             int i = indexOf(s, alphas);
-            data.add(new Data(s, morses[i]));
+            dest.add(new Data(s, morses[i]));
         }
+    }
+
+    static {
+        buildData(alphas, dataAll);
     }
 
     private static int indexOf(String s, String[] arr) {
@@ -96,6 +101,4 @@ public class Data {
     public String toString() {
         return alpha + " " + morse;
     }
-
-
 }

@@ -1,5 +1,6 @@
 package com.kiowok.morsecode;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 public class Model {
@@ -25,9 +26,11 @@ public class Model {
         correct = 0;
 
         if (level == 1)
-            Data.buildData(Data.level1);
+            Data.buildData(Data.level1, (Data.data = new ArrayList<>()));
+        else if (level == 2)
+            Data.buildData(Data.level2, (Data.data = new ArrayList<>()));
         else
-            Data.buildData(Data.level2);
+            Data.buildData(Data.alphas, (Data.data = new ArrayList<>()));
 
         Collections.shuffle(Data.data);
 

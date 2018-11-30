@@ -2,10 +2,13 @@ package com.kiowok.morsecode;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
     Button dot, dash, done;
@@ -27,6 +30,28 @@ public class MainActivity extends Activity {
 
         model.start(1);
         refresh();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_show:
+                String s = Data.dataAll.toString();
+                //s = s.replaceAll("\\\[", "");
+                s = s.substring(1, s.length() - 1);
+                //s = s.replaceAll("\\\]", "");
+                s = s.replaceAll(",", "\n");
+                Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void refresh() {
@@ -85,6 +110,11 @@ public class MainActivity extends Activity {
 
     public void onLevel2(View view) {
         model.start(2);
+        refresh();
+    }
+
+    public void onLevel3(View view) {
+        model.start(3);
         refresh();
     }
 }
