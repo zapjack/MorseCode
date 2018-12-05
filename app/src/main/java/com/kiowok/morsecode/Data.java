@@ -46,6 +46,14 @@ public class Data {
             "A", "C", "D", "E", "M", "N", "O", "S", "T"
     };
 
+    public static String[] level3 = {
+            "A", "B", "C", "D", "E", "F", "H", "M", "N", "O", "P", "S", "T"
+    };
+
+    public static String[] level4 = {
+            "A", "B", "C", "D", "E", "F", "H", "J", "K", "M", "N", "O", "P", "S", "T", "V", "W"
+    };
+
     public static ArrayList<Data> dataAll = new ArrayList<>();
 
     public static ArrayList<Data> data = new ArrayList();

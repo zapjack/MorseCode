@@ -2,11 +2,14 @@ package com.kiowok.morsecode;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +18,8 @@ public class MainActivity extends Activity {
     TextView ques, status;
     EditText guess;
     Model model = new Model();
+    RadioButton guessMorse;
+    RadioGroup radioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +32,8 @@ public class MainActivity extends Activity {
         ques = findViewById(R.id.ques);
         status = findViewById(R.id.status);
         guess = findViewById(R.id.guess);
+        guessMorse = findViewById(R.id.guessMorse);
+        radioGroup = findViewById(R.id.radioGroup);
 
         model.start(1);
         refresh();
@@ -55,7 +62,7 @@ public class MainActivity extends Activity {
     }
 
     private void refresh() {
-        ques.setText("What is the code for: " + model.getQuestionText());
+        ques.setText("" + model.getQuestionText());
 
         String s = (model.isLastQuestionCorrect() ? "Correct!!!" : "No...");
 
@@ -65,8 +72,14 @@ public class MainActivity extends Activity {
         }
         else if (model.done())
             status.setText(String.format("Last guess: %s\n%d of %d", s, model.getCorrect(), model.getTotal()));
-        else
-            status.setText(String.format("Last guess: %s", s));
+        else {
+            if (model.isLastQuestionCorrect())
+                status.setText("YES");
+            else {
+                status.setText(String.format("NO>> asked: %s yours: %s correct: %s",
+                    model.getLastQuestionText(), model.getLastGuessText(), model.getLastAnswerText()));
+            }
+        }
     }
 
     public void onDot(View view) {
@@ -84,37 +97,21 @@ public class MainActivity extends Activity {
     }
 
     public void onDone(View view) {
+        model.eval(Model.normalize(guess.getText().toString()));
         guess.setText("");
-        model.eval();
-        refresh();
-        /*
-        if (current >= Data.data.size()) {
-            String s = status.getText().toString();
-            s += String.format("\n%d of %d", correct, current);
-            status.setText(s);
-            startGame();
-        }
-        else {
-            Data d = Data.data.get(current);
-            answerText = d.getMorse();
-            questionText = d.getAlpha();
-            ques.setText("What is the code for: " + questionText);
-        }
-        */
-    }
-
-    public void onLevel1(View view) {
-        model.start(1);
         refresh();
     }
 
-    public void onLevel2(View view) {
-        model.start(2);
+    public void onLevel(View view) {
+        Button b = (Button) view;
+        String s = b.getText().toString().trim();
+        model.start(Integer.parseInt(s));
         refresh();
     }
 
-    public void onLevel3(View view) {
-        model.start(3);
+    public void onGuessing(View view) {
+        model.setGuessingMorse(guessMorse.isChecked());
+        model.start(model.getLevel());
         refresh();
     }
 }

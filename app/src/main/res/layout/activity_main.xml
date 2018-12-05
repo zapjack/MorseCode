@@ -11,24 +11,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="Guess: "
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <Button
         android:id="@+id/dash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="13dp"
         android:onClick="onDash"
         android:text="-"
         app:layout_constraintEnd_toStartOf="@+id/done"
         app:layout_constraintStart_toEndOf="@+id/dot"
-        app:layout_constraintTop_toBottomOf="@+id/ques" />
+        app:layout_constraintTop_toBottomOf="@+id/status" />
 
     <Button
         android:id="@+id/dot"
@@ -57,9 +58,10 @@
         android:id="@+id/guess"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large.Inverse"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dot" />
@@ -68,22 +70,23 @@
         android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guess" />
+        app:layout_constraintTop_toBottomOf="@+id/ques" />
 
     <Button
         android:id="@+id/level1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:onClick="onLevel1"
-        android:text="Start L1"
+        android:onClick="onLevel"
+        android:text="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/status" />
+        app:layout_constraintTop_toBottomOf="@+id/guess" />
 
     <Button
         android:id="@+id/level2"
@@ -91,10 +94,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:onClick="onLevel2"
-        android:text="Start L2"
+        android:onClick="onLevel"
+        android:text="2"
         app:layout_constraintStart_toEndOf="@+id/level1"
-        app:layout_constraintTop_toBottomOf="@+id/status" />
+        app:layout_constraintTop_toBottomOf="@+id/guess" />
 
     <Button
         android:id="@+id/level3"
@@ -102,12 +105,87 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:onClick="onLevel"
+        android:text="3"
+        app:layout_constraintStart_toEndOf="@+id/level2"
+        app:layout_constraintTop_toBottomOf="@+id/guess" />
+
+    <Button
+        android:id="@+id/level4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="onLevel"
+        android:text="4"
+        app:layout_constraintStart_toEndOf="@+id/level3"
+        app:layout_constraintTop_toBottomOf="@+id/guess" />
+
+    <Button
+        android:id="@+id/level5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:onClick="onLevel3"
-        android:text="Start L3"
+        android:onClick="onLevel"
+        android:text="5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/level2"
-        app:layout_constraintTop_toBottomOf="@+id/status" />
+        app:layout_constraintStart_toEndOf="@+id/level4"
+        app:layout_constraintTop_toBottomOf="@+id/guess" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:checkedButton="@+id/guessMorse"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <RadioButton
+            android:id="@+id/guessMorse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onGuessing"
+            android:text="Morse" />
+
+        <RadioButton
+            android:id="@+id/guessAlpha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:onClick="onGuessing"
+            android:text="Alpha" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Guess:"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/level3" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="What is the code for:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

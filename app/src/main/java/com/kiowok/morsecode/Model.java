@@ -4,16 +4,27 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Model {
+    private int level = 1;
     private KState state = KState.NONE;
+    private Guess guessing = Guess.MORSE;
     private int current, correct, total;
     private Data dCurrent = null;
     private String answerText = "", questionText = "";
     private String guessText = "";
     private boolean lastQuestionCorrect = false;
-
     private String lastAnswerText = "", lastQuestionText = "", lastGuessText = "";
 
+    public String getLastAnswerText() {
+        return lastAnswerText;
+    }
 
+    public String getLastQuestionText() {
+        return lastQuestionText;
+    }
+
+    public String getLastGuessText() {
+        return lastGuessText;
+    }
 
     /**
      * Start game at the indicated level of difficulty.
@@ -21,6 +32,7 @@ public class Model {
      * @param level Level of difficulty
      */
     public void start(int level) {
+        this.level = level;
         state = KState.PLAYING;
         current = 0;
         correct = 0;
@@ -29,22 +41,37 @@ public class Model {
             Data.buildData(Data.level1, (Data.data = new ArrayList<>()));
         else if (level == 2)
             Data.buildData(Data.level2, (Data.data = new ArrayList<>()));
+        else if (level == 3)
+            Data.buildData(Data.level3, (Data.data = new ArrayList<>()));
+        else if (level == 4)
+            Data.buildData(Data.level4, (Data.data = new ArrayList<>()));
         else
             Data.buildData(Data.alphas, (Data.data = new ArrayList<>()));
 
         Collections.shuffle(Data.data);
 
         dCurrent = Data.data.get(current);
-        answerText = dCurrent.getMorse();
-        questionText = dCurrent.getAlpha();
+        answerText = isGuessingMorse() ? dCurrent.getMorse() : dCurrent.getAlpha();
+        questionText = isGuessingMorse() ? dCurrent.getAlpha() : dCurrent.getMorse();
         total = Data.data.size();
         guessText = "";
     }
 
-    public boolean eval() {
+    public int getLevel() {
+        return level;
+    }
+
+    public boolean eval(String guessIn) {
+        guessText = Model.normalize(guessIn);
+
         if (state == KState.DONE) return false;
 
-        answerText = answerText.replaceAll("\\s+", "");
+        answerText = Model.normalize(answerText);
+        questionText = Model.normalize(questionText);
+
+        // answerText = answerText.replaceAll("\\s+", "");
+        //questionText = questionText.replaceAll("\\s+", "");
+
         lastAnswerText = answerText;
         lastGuessText = guessText;
         lastQuestionText = questionText;
@@ -52,21 +79,33 @@ public class Model {
         if (guessText.equalsIgnoreCase(answerText)) {
             correct++;
             lastQuestionCorrect = true;
-        }
-        else
+        } else
             lastQuestionCorrect = false;
 
         current++;
-        if (current >= total)
+        if (current >= total) {
             state = KState.DONE;
-        else {
+        } else {
             dCurrent = Data.data.get(current);
-            answerText = dCurrent.getMorse();
-            questionText = dCurrent.getAlpha();
+
+            answerText = isGuessingMorse() ? dCurrent.getMorse() : dCurrent.getAlpha();
+            questionText = isGuessingMorse() ? dCurrent.getAlpha() : dCurrent.getMorse();
+
             guessText = "";
         }
 
         return lastQuestionCorrect;
+    }
+
+    public void setGuessingMorse(boolean gsMorse) {
+        if (gsMorse)
+            guessing = Guess.MORSE;
+        else
+            guessing = Guess.ALPHA;
+    }
+
+    public boolean isGuessingMorse() {
+        return guessing == Guess.MORSE;
     }
 
     public void setGuessText(String guessText) {
@@ -103,5 +142,9 @@ public class Model {
 
     public int getTotal() {
         return total;
+    }
+
+    public static String normalize(String in) {
+        return in.trim().toLowerCase().replaceAll("\\s+", "");
     }
 }
